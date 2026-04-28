@@ -7,14 +7,6 @@ import i2 from "@/assets/insight-2.jpg";
 import i3 from "@/assets/insight-3.jpg";
 
 export const Route = createFileRoute("/insights")({
-  head: () => ({
-    meta: [
-      { title: "Insights — Saga Creative Agency" },
-      { name: "description", content: "Pemikiran, panduan, dan catatan dari tim Saga Creative seputar branding, konten, dan pertumbuhan brand." },
-      { property: "og:title", content: "Saga Insights" },
-      { property: "og:description", content: "Catatan & pemikiran tim Saga Creative." },
-    ],
-  }),
   component: InsightsPage,
 });
 

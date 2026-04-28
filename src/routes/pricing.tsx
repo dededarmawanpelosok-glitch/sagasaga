@@ -4,14 +4,6 @@ import { SectionLabel } from "@/components/SectionLabel";
 import { SagaLines } from "@/components/SagaLines";
 
 export const Route = createFileRoute("/pricing")({
-  head: () => ({
-    meta: [
-      { title: "Pricing — Saga Creative Agency" },
-      { name: "description", content: "Tiga paket Saga Creative: Standar Rp 500.000, Grow Rp 700.000, Premium Rp 1.500.000." },
-      { property: "og:title", content: "Paket Saga Creative" },
-      { property: "og:description", content: "Paket sederhana, harga jujur — pilih yang sesuai tahap brand Anda." },
-    ],
-  }),
   component: PricingPage,
 });
 

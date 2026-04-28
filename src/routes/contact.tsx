@@ -1,23 +1,72 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, MapPin, Instagram, Youtube, MessageCircle, ArrowRight, Check } from "lucide-react";
+import { Mail, MapPin, Instagram, Youtube, MessageCircle, ArrowRight, Check, Phone } from "lucide-react";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SagaLines } from "@/components/SagaLines";
 
 export const Route = createFileRoute("/contact")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Saga Creative Agency" },
-      { name: "description", content: "Hubungi Saga Creative untuk konsultasi gratis. Email sagacore279@gmail.com — Desa Pajajar, Rajagaluh, Majalengka." },
-      { property: "og:title", content: "Hubungi Saga Creative" },
-      { property: "og:description", content: "Konsultasi gratis untuk brand Anda." },
-    ],
-  }),
   component: ContactPage,
 });
 
+const WA_NUMBER = "6281288442604";
+
+function buildWhatsAppMessage(data: {
+  brand: string;
+  name: string;
+  email: string;
+  wa: string;
+  package: string;
+  story: string;
+  budget: string;
+}) {
+  const lines = [
+    "Halo Saga Creative! 👋",
+    "Saya ingin berkonsultasi dan memesan layanan.",
+    "",
+    "📋 *DATA PEMESANAN*",
+    `🏷️ Nama Brand/UMKM : ${data.brand}`,
+    `👤 Nama Kontak     : ${data.name}`,
+    `📧 Email           : ${data.email}`,
+    `📱 WhatsApp        : ${data.wa}`,
+    `📦 Paket Diminati  : ${data.package}`,
+    "",
+    `📝 *Tentang Brand:*`,
+    data.story,
+    "",
+    data.budget ? `💰 Budget Range    : ${data.budget}` : "",
+    "",
+    "Mohon informasi lebih lanjut. Terima kasih! 🙏",
+  ]
+    .filter((line, i, arr) => !(line === "" && arr[i - 1] === ""))
+    .join("\n");
+
+  return encodeURIComponent(lines.trim());
+}
+
 function ContactPage() {
+  const [form, setForm] = useState({
+    brand: "",
+    name: "",
+    email: "",
+    wa: "",
+    package: "Belum tahu",
+    story: "",
+    budget: "",
+  });
   const [submitted, setSubmitted] = useState(false);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const msg = buildWhatsAppMessage(form);
+    const url = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    setSubmitted(true);
+  }
+
   return (
     <>
       <section className="mx-auto max-w-7xl px-5 pt-12 lg:px-8 lg:pt-20">
@@ -42,32 +91,59 @@ function ContactPage() {
                   </div>
                   <h3 className="mt-5 font-display text-2xl font-bold text-primary">Terima kasih!</h3>
                   <p className="mt-2 max-w-md text-muted-foreground">
-                    Pesan Anda sudah kami terima. Tim Saga akan menghubungi dalam 24 jam ke email atau WhatsApp Anda.
+                    WhatsApp sudah terbuka dengan pesan yang terisi otomatis. Tinggal kirim dan tim Saga akan segera merespons!
                   </p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary underline underline-offset-4 hover:opacity-70 transition"
+                  >
+                    Isi form lagi
+                  </button>
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setSubmitted(true);
-                  }}
-                  className="grid gap-5"
-                >
+                <form onSubmit={handleSubmit} className="grid gap-5">
                   <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Nama Brand / UMKM" name="brand" required />
-                    <Field label="Nama Kontak" name="name" required />
-                    <Field label="Email" name="email" type="email" required />
-                    <Field label="WhatsApp" name="wa" required />
+                    <Field label="Nama Brand / UMKM" name="brand" value={form.brand} onChange={handleChange} required />
+                    <Field label="Nama Kontak" name="name" value={form.name} onChange={handleChange} required />
+                    <Field label="Email" name="email" type="email" value={form.email} onChange={handleChange} required />
+                    <Field label="No. WhatsApp" name="wa" type="tel" value={form.wa} onChange={handleChange} required placeholder="08xxxxxxxxxx" />
                   </div>
-                  <SelectField label="Paket yang diminati" name="package" options={["Belum tahu", "Paket Standar — Rp 500.000", "Paket Grow — Rp 700.000", "Paket Premium — Rp 1.500.000"]} />
-                  <TextareaField label="Ceritakan tentang brand Anda" name="story" required />
-                  <Field label="Budget range (opsional)" name="budget" />
+                  <SelectField
+                    label="Paket yang diminati"
+                    name="package"
+                    value={form.package}
+                    onChange={handleChange}
+                    options={[
+                      "Belum tahu",
+                      "Paket Standar — Rp 500.000",
+                      "Paket Grow — Rp 700.000",
+                      "Paket Premium — Rp 1.500.000",
+                    ]}
+                  />
+                  <TextareaField
+                    label="Ceritakan tentang brand Anda"
+                    name="story"
+                    value={form.story}
+                    onChange={handleChange}
+                    required
+                  />
+                  <Field
+                    label="Budget range (opsional)"
+                    name="budget"
+                    value={form.budget}
+                    onChange={handleChange}
+                    placeholder="Contoh: Rp 500rb – 1jt / bulan"
+                  />
                   <button
                     type="submit"
-                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+                    className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white hover:bg-[#1ebe5a] transition shadow-lg shadow-[#25D366]/20"
                   >
-                    Kirim Pesan <ArrowRight className="h-4 w-4" />
+                    <MessageCircle className="h-4 w-4" />
+                    Kirim via WhatsApp <ArrowRight className="h-4 w-4" />
                   </button>
+                  <p className="text-xs text-muted-foreground -mt-2">
+                    Tombol akan membuka WhatsApp dengan pesan terisi otomatis sesuai form di atas.
+                  </p>
                 </form>
               )}
             </div>
@@ -75,9 +151,14 @@ function ContactPage() {
 
           {/* INFO */}
           <div className="lg:col-span-5 space-y-5">
+            <InfoCard
+              icon={<MessageCircle className="h-5 w-5" />}
+              label="WhatsApp"
+              value="+62 812-8844-2604"
+              href={`https://wa.me/${WA_NUMBER}`}
+            />
             <InfoCard icon={<Mail className="h-5 w-5" />} label="Email" value="sagacore279@gmail.com" href="mailto:sagacore279@gmail.com" />
             <InfoCard icon={<MapPin className="h-5 w-5" />} label="Lokasi" value="Desa Pajajar, Rajagaluh, Majalengka" />
-            <InfoCard icon={<MessageCircle className="h-5 w-5" />} label="WhatsApp" value="[WHATSAPP NUMBER FROM PROFILE]" />
 
             <div className="rounded-2xl border border-border bg-cream p-6 chamfer-tr">
               <SagaLines className="text-primary" />
@@ -86,7 +167,7 @@ function ContactPage() {
               </h3>
               <div className="mt-4 grid gap-3">
                 <Social icon={<Instagram className="h-4 w-4" />} label="Instagram" handle="@SagaCreative_" href="https://instagram.com/SagaCreative_" />
-                <Social icon={<MessageCircle className="h-4 w-4" />} label="TikTok" handle="@SagaCreative_" href="https://tiktok.com/@SagaCreative_" />
+                <Social icon={<Phone className="h-4 w-4" />} label="TikTok" handle="@SagaCreative_" href="https://tiktok.com/@SagaCreative_" />
                 <Social icon={<Youtube className="h-4 w-4" />} label="YouTube" handle="@Sagacore09" href="https://youtube.com/@Sagacore09" />
                 <Social icon={<MessageCircle className="h-4 w-4" />} label="Threads" handle="@Sagaone" href="https://threads.net/@Sagaone" />
               </div>
@@ -107,43 +188,85 @@ function ContactPage() {
   );
 }
 
-function Field({ label, name, type = "text", required }: { label: string; name: string; type?: string; required?: boolean }) {
+// ── Field Components ─────────────────────────────────────────────────────────
+
+function Field({
+  label, name, type = "text", required, value, onChange, placeholder,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  required?: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+}) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}{required && " *"}</span>
+      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        {label}{required && " *"}
+      </span>
       <input
         type={type}
         name={name}
+        value={value}
+        onChange={onChange}
         required={required}
-        className="border-0 border-b-2 border-border bg-transparent py-2.5 text-sm outline-none transition focus:border-lime"
+        placeholder={placeholder}
+        className="border-0 border-b-2 border-border bg-transparent py-2.5 text-sm outline-none transition focus:border-lime placeholder:text-muted-foreground/50"
       />
     </label>
   );
 }
 
-function TextareaField({ label, name, required }: { label: string; name: string; required?: boolean }) {
+function TextareaField({
+  label, name, required, value, onChange,
+}: {
+  label: string;
+  name: string;
+  required?: boolean;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}{required && " *"}</span>
+      <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        {label}{required && " *"}
+      </span>
       <textarea
         name={name}
+        value={value}
+        onChange={onChange}
         required={required}
         rows={4}
-        className="resize-none border-0 border-b-2 border-border bg-transparent py-2.5 text-sm outline-none transition focus:border-lime"
+        placeholder="Ceritakan bisnis Anda, target pasar, masalah yang dihadapi, dll."
+        className="resize-none border-0 border-b-2 border-border bg-transparent py-2.5 text-sm outline-none transition focus:border-lime placeholder:text-muted-foreground/50"
       />
     </label>
   );
 }
 
-function SelectField({ label, name, options }: { label: string; name: string; options: string[] }) {
+function SelectField({
+  label, name, options, value, onChange,
+}: {
+  label: string;
+  name: string;
+  options: string[];
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</span>
       <select
         name={name}
+        value={value}
+        onChange={onChange}
         className="border-0 border-b-2 border-border bg-transparent py-2.5 text-sm outline-none transition focus:border-lime"
       >
-        {options.map((o) => <option key={o}>{o}</option>)}
+        {options.map((o) => (
+          <option key={o} value={o}>{o}</option>
+        ))}
       </select>
     </label>
   );
@@ -159,7 +282,7 @@ function InfoCard({ icon, label, value, href }: { icon: React.ReactNode; label: 
       </div>
     </div>
   );
-  return href ? <a href={href}>{Inner}</a> : Inner;
+  return href ? <a href={href} target="_blank" rel="noreferrer">{Inner}</a> : Inner;
 }
 
 function Social({ icon, label, handle, href }: { icon: React.ReactNode; label: string; handle: string; href: string }) {

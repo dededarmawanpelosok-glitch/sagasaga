@@ -3,14 +3,6 @@ import { SectionLabel } from "@/components/SectionLabel";
 import { SagaLines } from "@/components/SagaLines";
 
 export const Route = createFileRoute("/process")({
-  head: () => ({
-    meta: [
-      { title: "Process — Saga Creative Agency" },
-      { name: "description", content: "6 langkah proses kerja Saga Creative: research, strategize, execute, launch, scale, report." },
-      { property: "og:title", content: "Proses Kerja Saga Creative" },
-      { property: "og:description", content: "Sistematis, transparan, dan terukur." },
-    ],
-  }),
   component: ProcessPage,
 });
 

@@ -8,15 +8,6 @@ import p2 from "@/assets/print-2.jpg";
 import p3 from "@/assets/print-3.jpg";
 
 export const Route = createFileRoute("/portfolio")({
-  head: () => ({
-    meta: [
-      { title: "Portfolio — Saga Creative Agency" },
-      { name: "description", content: "Studi kasus Photocopy Pajajar — jasa fotocopy, printing & percetakan profesional di Bandung." },
-      { property: "og:title", content: "Portfolio Saga Creative — Photocopy Pajajar" },
-      { property: "og:description", content: "Karya pilihan: branding, content, dan performance untuk percetakan lokal." },
-      { property: "og:image", content: casePhotocopy },
-    ],
-  }),
   component: PortfolioPage,
 });
 

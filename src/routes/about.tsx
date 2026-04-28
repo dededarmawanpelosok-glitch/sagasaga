@@ -5,14 +5,6 @@ import { SagaLines } from "@/components/SagaLines";
 import aboutTeam from "@/assets/about-team.jpg";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Saga Creative Agency" },
-      { name: "description", content: "Saga Creative lahir dari Majalengka — agency kreatif yang membawa misi anak desa dengan standar nasional." },
-      { property: "og:title", content: "About Saga Creative" },
-      { property: "og:description", content: "Origin story, mission, dan values dari Saga Creative." },
-    ],
-  }),
   component: AboutPage,
 });
 

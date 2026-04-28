@@ -9,14 +9,6 @@ import perfImg from "@/assets/service-performance.jpg";
 import casePhotocopy from "@/assets/case-photocopy.jpg";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Saga Creative Agency — Tumbuhkan Brand dengan Strategi yang Lebih Cerdas" },
-      { name: "description", content: "Agency kreatif digital di Majalengka. Kami bantu brand & UMKM tumbuh lewat konten, branding, dan performance marketing." },
-      { property: "og:title", content: "Saga Creative Agency" },
-      { property: "og:description", content: "Anak desa dengan standar nasional. Bantu brand tampil lebih kuat & siap berkembang." },
-    ],
-  }),
   component: HomePage,
 });
 

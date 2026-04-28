@@ -7,14 +7,6 @@ import brandingImg from "@/assets/service-branding.jpg";
 import perfImg from "@/assets/service-performance.jpg";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — Saga Creative Agency" },
-      { name: "description", content: "Layanan Saga Creative: Creative Content & Social Media, Strategic Branding, dan Digital Sales & Performance." },
-      { property: "og:title", content: "Layanan Saga Creative" },
-      { property: "og:description", content: "Tiga pilar layanan untuk membantu brand tumbuh stabil." },
-    ],
-  }),
   component: ServicesPage,
 });
 
