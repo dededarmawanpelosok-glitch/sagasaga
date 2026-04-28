@@ -1,8 +1,7 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, Link, createRootRoute } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-
-import appCss from "../styles.css?url";
+import "../styles.css";
 
 function NotFoundComponent() {
   return (
@@ -27,42 +26,9 @@ function NotFoundComponent() {
 }
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Saga Creative Agency — Anak Desa, Standar Nasional" },
-      { name: "description", content: "Saga Creative membantu brand dan UMKM tumbuh dengan content, branding, dan performance marketing yang rapi dan terarah." },
-      { name: "author", content: "Saga Creative Agency" },
-      { property: "og:title", content: "Saga Creative Agency — Anak Desa, Standar Nasional" },
-      { name: "twitter:title", content: "Saga Creative Agency — Anak Desa, Standar Nasional" },
-      { property: "og:description", content: "Saga Creative membantu brand dan UMKM tumbuh dengan content, branding, dan performance marketing yang rapi dan terarah." },
-      { name: "twitter:description", content: "Saga Creative membantu brand dan UMKM tumbuh dengan content, branding, dan performance marketing yang rapi dan terarah." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/227144ec-10fb-41b6-ac3b-1956f2bd833e" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/227144ec-10fb-41b6-ac3b-1956f2bd833e" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "stylesheet", href: appCss }],
-  }),
-  shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
 });
-
-function RootShell({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="id">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
 
 function RootComponent() {
   return (

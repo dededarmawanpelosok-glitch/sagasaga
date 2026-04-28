@@ -3,8 +3,8 @@
   "buildCommand": "npm run build",
   "rewrites": [
     {
-      "source": "/((?!assets/|_build/|_shell\\.html|favicon\\.ico|robots\\.txt).*)",
-      "destination": "/_shell.html"
+      "source": "/((?!assets/|favicon\\.ico|robots\\.txt).*)",
+      "destination": "/index.html"
     }
   ]
 }
