@@ -1,10 +1,11 @@
 import { defineConfig } from "@tanstack/react-start/config";
+import tsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   spa: {
     enabled: true,
-    prerender: {
-      outputPath: "/index.html",
-    },
+  },
+  vite: {
+    plugins: [tsConfigPaths()],
   },
 });
